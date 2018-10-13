@@ -4,14 +4,12 @@
 #include <ctype.h>
 
 #define INICIO -15
-#define FIM 35
-#define PASSO 10
+#define FIM 15
+#define PASSO 6
 
 float rotationX = 45.0, rotationY = 0.0;
-float last_x = -20, last_y = 6;
+float last_x = -14, last_y = -9;
 int width = 640, height = 300;
-
-int distOrigem = 45;
 
 void init(void)
 {
@@ -32,15 +30,14 @@ void desenharGrid () {
       for (int coluna = INICIO; coluna < FIM; coluna += PASSO) {
 
          glPushMatrix();
-            glRotatef(45, 1, 0, 0);
-            glTranslatef(-10, -20, 0);
             glBegin(GL_POLYGON);
-               glVertex3f(linha, coluna, 0);
+               glVertex3f(linha, coluna - PASSO, 0);
+               glVertex3f(linha + PASSO, coluna - PASSO, 0);
                glVertex3f(linha + PASSO, coluna, 0);
-               glVertex3f(linha + PASSO, coluna + PASSO, 0);
-               glVertex3f(linha, coluna + PASSO, 0);
+               glVertex3f(linha, coluna, 0);
             glEnd();
          glPopMatrix();
+
       }
    }
 }
@@ -54,20 +51,23 @@ void display(void)
 
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity ();
-   gluLookAt (0.0, 0.0, distOrigem, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0);
+   gluLookAt (0.0, 15.0, 20.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0);
 
    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
    glColor3f (1, 1, 1);
+
    desenharGrid();
+   
+
    glColor3f (1, 0, 0);
    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
    
    glPushMatrix();
-      glScalef(1.11, 1.1, 1.1);
-		glRotatef(rotationX, 1.0, 0.0, 0.0 );
+      glScalef(1.02, 1.01, 1.01);
+		//glRotatef(rotationX, 1.0, 0.0, 0.0 );
       glTranslatef(last_x, last_y, 0);
-      glutSolidCube(10);
+      glutSolidCube(6);
    glPopMatrix();
 
    glutSwapBuffers();
