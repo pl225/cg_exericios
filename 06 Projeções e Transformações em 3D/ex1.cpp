@@ -7,8 +7,8 @@
 #define FIM 35
 #define PASSO 10
 
-float rotationX = 25.0, rotationY = 0.0;
-int   last_x, last_y;
+float rotationX = 45.0, rotationY = 0.0;
+float last_x = -20, last_y = 6;
 int width = 640, height = 300;
 
 int distOrigem = 45;
@@ -64,10 +64,10 @@ void display(void)
    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
    
    glPushMatrix();
-		//glRotatef( rotationY, 200.0, 1.0, 0.0 );
-		//glRotatef( rotationX, 1.0, 0.0, 0.0 );
-      glTranslatef(25, 5, 0);
-      glutSolidCube(7.5);
+      glScalef(1.11, 1.1, 1.1);
+		glRotatef(rotationX, 1.0, 0.0, 0.0 );
+      glTranslatef(last_x, last_y, 0);
+      glutSolidCube(10);
    glPopMatrix();
 
    glutSwapBuffers();
@@ -85,42 +85,20 @@ void reshape (int w, int h)
    glViewport (0, 0, (GLsizei) w, (GLsizei) h);
 }
 
-void keyboard (unsigned char key, int x, int y)
+void specialKeysPress(int key, int x, int y)
 {
-   switch (tolower(key))
+   printf("%d\n", key);
+   switch(key)
    {
-      case '+' :
-         distOrigem--;
-         if(distOrigem<20) distOrigem=20;
+      case GLUT_KEY_RIGHT:
+         //if (passoX != 0) passoX += 1;
       break;
-      case '-' :
-         distOrigem++;
-         if(distOrigem>180) distOrigem=180;
-      break;
-      case 27:
-         exit(0);
-      break;
+      case GLUT_KEY_LEFT:
+         //if (passoX != 0) passoX = passoX - 1 < 1 ? 1 : passoX - 1;
+        break;
+   break;
    }
-}
-
-// Motion callback
-void motion(int x, int y )
-{
-   rotationX += (float) (y - last_y);
-   rotationY += (float) (x - last_x);
-
-   last_x = x;
-   last_y = y;
-}
-
-// Mouse callback
-void mouse(int button, int state, int x, int y)
-{
-   if ( button == GLUT_LEFT_BUTTON && state == GLUT_DOWN )
-   {
-      last_x = x;
-      last_y = y;
-   }
+   glutPostRedisplay();
 }
 
 int main(int argc, char** argv)
@@ -133,9 +111,7 @@ int main(int argc, char** argv)
    init ();
    glutDisplayFunc(display);
    glutReshapeFunc(reshape);
-   glutMouseFunc( mouse );
-   glutMotionFunc( motion );
-   glutKeyboardFunc(keyboard);
+   glutSpecialFunc(specialKeysPress);
    glutIdleFunc(idle);
    glutMainLoop();
    return 0;
