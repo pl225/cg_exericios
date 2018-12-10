@@ -37,6 +37,7 @@ float min(float a, float b) {
   return a < b ? a : b;
 }
 
+
 void keyboard (unsigned char key, int x, int y) {
   if(isMoving) {
     return;
@@ -52,7 +53,6 @@ void mouse(int button, int state, int x, int y) {
     last_x = x;
     last_y = y;
   }
-
 
 int main(int argc, char** argv) {
   glutInit(&argc, argv);
@@ -136,22 +136,23 @@ void drawGrid(float x_maximo, float xStep, float x_minimo, float z_maximo, float
 bool isMoving = false;
 
 void updateMovement(float dt) {
+  float qtdMov = gridSize/10.0;
    switch (tolower(direction))
     {
     case 'w':
-       Z = Z + gridSize > z_maximo ? z_maximo : Z + gridSize;
+       Z = Z + qtdMov > z_maximo ? z_maximo : Z + qtdMov;
        isMoving = Z != z_maximo;
     break;
     case 's':
-    	Z = Z - gridSize < z_minimo ? z_minimo : Z - gridSize;
+    	Z = Z - qtdMov < z_minimo ? z_minimo : Z - qtdMov;
     	isMoving = Z != z_minimo;
     break;
     case 'a':
-        X = X + gridSize > x_maximo ? x_maximo : X + gridSize;
+        X = X + qtdMov > x_maximo ? x_maximo : X + qtdMov;
        isMoving = X != x_maximo;
     break;
     case 'd':
-        X = X - gridSize < x_minimo ? x_minimo : X - gridSize;
+        X = X - qtdMov < x_minimo ? x_minimo : X - qtdMov;
        isMoving = X != x_minimo;
     break;
     }
@@ -159,7 +160,6 @@ void updateMovement(float dt) {
     	isMoving = false;
     }
 }
-
 
 
 void idle () {  
@@ -196,7 +196,6 @@ void reshape (int w, int h) {
   height = h;
   glViewport (0, 0, (GLsizei) w, (GLsizei) h);
 }
-
 
 // Motion callback
 void motion(int x, int y ) {
